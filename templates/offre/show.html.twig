@@ -1,0 +1,86 @@
+{% extends 'visitor_base.html.twig' %}
+
+{% block title %}Hello OffreController!{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}">
+{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="card mb-3" style="max-width: 100%;">
+      <div class="row g-0">
+          <div class="col-md-4">
+             <!-- Sale badge-->
+              {% if voiture.typeVoiture == 'location' %} 
+                    <div class="badge bg-primary text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Location</div>
+                    {% else %}
+                        {% if voiture.typeVoiture == 'vendre' %}
+                        
+                              <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente </div>
+                        {% endif %}
+                            
+            {% endif %}
+              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                {% for image in voiture.images %}
+                  
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{loop.index}}" class="{% if loop.index == 1 %} active {% endif %}" aria-current="true" aria-label="Slide 1"></button>
+                {% endfor %}
+                  {# <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> #}
+                </div>
+                <div class="carousel-inner">
+                    {% for image in voiture.images %}
+                    <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                      <img src="{{asset('uploads/voitures/'~image.nom)}}" class="d-block w-100" alt="...">
+                    </div>
+                  {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>                <!-- Product details-->
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <!-- Product name-->
+                    <h5 class="fw-bolder">{{voiture.marque}}</h5>
+                    <!-- Product price-->
+                    {% if voiture.typeOffre.offre.promotion != 0  %}
+                          <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.promotion  }} FCFA</span>
+                        {% endif %}
+                                    
+                     {{ voiture.typeOffre.offre.montant  }} FCFA
+                </div>
+            </div>
+             <div class="row">
+                {# <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">location</a></div>  #}
+            {% if voiture.typeOffre.isValid == false %}
+                {% if voiture.typeVoiture == 'location' %} 
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('offre_panier',{id:voiture.id})}}">Loué</a></div>
+                      {% else %}
+                          {% if voiture.typeVoiture == 'vendre' %}
+                          
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('offre_panier',{id:voiture.id})}}">acheté</a></div>
+                          {% endif %}
+                              
+              {% endif %}  
+            {% endif %}      
+            </div>
+        </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{voiture.marque}}</h5>
+              <p class="card-text">{{voiture.desciption}}.</p>
+              <p class="card-text"><small class="text-muted">{{voiture.createdAt | date('d/m/ H:m:s')}}</small></p>
+            </div>
+          </div>
+      </div>
+  </div>
+    <div class="col-4"><a href="{{path('visitor_home')}}">précédent<a/></div>
+</div>
+{% endblock %}
+

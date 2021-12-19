@@ -2,20 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\VisiteurRepository;
+use App\Repository\LouerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=VisiteurRepository::class)
+ * @ORM\Entity(repositoryClass=LouerRepository::class)
  */
-class Visiteur extends User
+class Louer extends TypeOffre
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     public function getId(): ?int
     {

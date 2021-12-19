@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"admin" = "Admin", "secretaire" = "Secretaire","client"="Client","visiteur" = "Visiteur"})
+ * @ORM\DiscriminatorMap({"admin" = "Admin", "secretaire" = "Secretaire","client"="Client"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -63,6 +65,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=10)
      */
     protected $sex;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Voiture::class, inversedBy="users")
+     */
+    private $voitures;
+
+   
+
+    public function __construct()
+    {
+        $this->voitures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -212,4 +226,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Voiture[]
+     */
+    public function getVoitures(): Collection
+    {
+        return $this->voitures;
+    }
+
+    public function addVoiture(Voiture $voiture): self
+    {
+        if (!$this->voitures->contains($voiture)) {
+            $this->voitures[] = $voiture;
+        }
+
+        return $this;
+    }
+
+    public function removeVoiture(Voiture $voiture): self
+    {
+        $this->voitures->removeElement($voiture);
+
+        return $this;
+    }
+
+    
 }

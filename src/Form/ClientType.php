@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Visiteur;
+use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VisiteurType extends AbstractType
+class ClientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -23,7 +23,7 @@ class VisiteurType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Visiteur::class,
+            'data_class' => Client::class,
         ]);
     }
 }

@@ -17,210 +17,61 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for voiture in voitures %}
+                    
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v1.jfif')}}" alt="..." />
+                            <img class="card-img-top" src="{{asset('uploads/voitures/'~voiture.images[0].nom)}}" alt="{{voiture.images[0].nom}}" />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Sale badge-->
-                                    <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente</div>
+                                 {% if voiture.typeVoiture == 'location' %} 
+                                        <div class="badge bg-primary text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Location</div>
+                                        {% else %}
+                                            {% if voiture.typeVoiture == 'vendre' %}
+                                            
+                                                 <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente </div>
+                                            {% endif %}
+                                                
+                                {% endif %}
+                                    
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
+                                    <h5 class="fw-bolder">{{voiture.marque}}</h5>
                                     <!-- Product price-->
-                                    $40.00 - $80.00
+                                    
+                                    {% if voiture.typeOffre.offre.promotion != 0  %}
+                                     <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.promotion  }} FCFA</span>
+                                    {% endif %}
+                                    
+                                    {{ voiture.typeOffre.offre.montant  }} FCFA
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="row">
-                                <div class="col-4"><a class="btn btn-outline-dark mt-auto" href="{{path('offre',{id:1})}}">détail</a></div>
-                                <div class="col-4"><a class="btn btn-outline-dark mt-auto" href="#">acheté</a></div>
-                                    
+                                <div class="col-4"><a class="btn btn-outline-dark mt-auto" href="{{path('offre_show',{id:voiture.id})}}">détail</a></div>
+                               {% if voiture.typeOffre.isValid == false %}
+
+                                   {% if voiture.typeVoiture == 'location' %} 
+                                         <div class="col-4"><a class="btn btn-outline-dark mt-auto" href="{{path('offre_panier',{id:voiture.id})}}">Loué</a></div>
+                                        {% else %}
+                                            {% if voiture.typeVoiture == 'vendre' %}
+                                            
+                                                 <div class="col-4"><a class="btn btn-outline-dark mt-auto" href="{{path('offre_panier',{id:voiture.id})}}">acheté</a></div>
+                                            {% endif %}             
+                                {% endif %} 
+                               
+                               {% endif %}
+                               
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v2.jpg')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Special Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v3.jfif')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Sale Item</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$50.00</span>
-                                    $25.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                         <!-- Sale badge-->
-                            <div class="badge bg-primary text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Location</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v4.jfif')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Popular Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    $40.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v6.jfif')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Sale Item</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$50.00</span>
-                                    $25.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v7.jfif')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    $120.00 - $280.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">En Vente</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v8.jpeg')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Special Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('voiture/v1.jfif')}}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Popular Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    $40.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
+                {% else %}
+                    
+                {% endfor %}
                 </div>
             </div>
         </section>

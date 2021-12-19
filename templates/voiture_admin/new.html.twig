@@ -1,0 +1,131 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block stylesheets %}
+  <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+       
+     <!-- Custom styles for this template-->
+      <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+          <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}">
+{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    {# <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> #}
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Créer une voiture!</h1>
+                                 
+                            </div>
+                           
+                         {% include "layout/_message_flash.html.twig" %}
+                             {{ form_start(form) }}
+                                <div class="row">
+                                    <div class="form-group col-md-5">
+                                        {{form_row(form.marque, {'label':'Marque','attr': {'placeholder':" La maque de la voiture "}})}}
+                                        <span></span>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        {{form_row(form.matricule, {'label':'Matricule','attr': {'placeholder':"Matricule "}})}}
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-5">
+                                        {{form_row(form.modele, {'label':'Modele','attr': {'placeholder':" Le modele de la voiture "}})}}
+                                        <span></span>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        {{form_row(form.couleur, {'label':'Couleur','attr': {'placeholder':"La couleur "}})}}
+                                        <span></span>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-5">
+                                        {{form_row(form.desciption, {'label':'La description','attr': {'placeholder':" Le description"}})}}
+                                        <span></span>
+                                     </div>
+                          
+                                </div>
+                                <div class="row">
+                                        
+                                    {{ form_row(form.images)}}
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <div class="row">
+                                    {% if app.request.attributes.get('_route') == "voiture_admin_update" %}
+                                    {% for image in voiture.images %}
+                                    <div class="col-md-2">
+                                    <img src="{{ asset('/uploads/voitures/'~image.nom)}}" width="100px" height="100px" alt="{{ image.nom}}">
+                                    <a href="{{path('voiture_admin_delete', {id : image.id})}}" data-delete data-token="{{ csrf_token('delete'~image.id) }}">supprimer</a>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    </div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                      <button type="submit" class="btn btn-primary text-center " btn-lg btn-block>valider</button>
+                                    </div>
+                                 </div>
+                             {{ form_end(form) }}      
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+  {# window.onload = () => { #}
+    // Gestion des boutons "Supprimer"
+    let links = document.querySelectorAll("[data-delete]")
+    
+    // On boucle sur links
+    for(link of links){
+        // On écoute le clic
+        link.addEventListener("click", function(e){
+            // On empêche la navigation
+            e.preventDefault()
+            // On demande confirmation
+            if(confirm("Voulez-vous supprimer cette image ?")){
+                // On envoie une requête Ajax vers le href du lien avec la méthode DELETE
+                fetch(this.getAttribute("href"), {
+                    method: "DELETE",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"_token": this.dataset.token})
+                }).then(
+                    // On récupère la réponse en JSON
+                    response => response.json()
+                ).then(data => {
+                  console.log(data);
+                    if(data.success)
+                        this.parentElement.remove()
+                    else
+                        alert(data.error)
+                }).catch(e => alert(e))
+            }
+        })
+    }
+{# } #}
+</script>
+
+{% endblock %}

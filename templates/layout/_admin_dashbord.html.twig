@@ -31,16 +31,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Offres</span>
+                    <span>Voitures</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Voitures:</h6>
+                        <a class="collapse-item" href="{{path('voiture_admin_new')}}">ajouter</a>
+                        <a class="collapse-item" href="{{path('voiture_admin_list')}}">List</a>
+                      
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo1"
+                    aria-expanded="true" aria-controls="collapseTwo1">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Offres</span>
+                </a>
+                <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo1" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Ventes:</h6>
-                        <a class="collapse-item" href="buttons.html">ajouter</a>
-                        <a class="collapse-item" href="cards.html">List</a>
+                        <a class="collapse-item" href="{{path('offre_admin_list_vente')}}">List</a>
                         <h6 class="collapse-header">Locations:</h6>
-                        <a class="collapse-item" href="buttons.html">ajouter</a>
-                        <a class="collapse-item" href="cards.html">list</a>
+                        <a class="collapse-item" href="{{path('offre_admin_list_location')}}">list</a>
                     </div>
                 </div>
             </li>
@@ -72,7 +86,20 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+                <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Achats</span></a>
+            </li>
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Locations</span></a>
+            </li>
+              <!-- Divider -->
+            <hr class="sidebar-divider">
             <!-- Heading -->
             <div class="sidebar-heading">
                 Addons

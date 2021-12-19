@@ -1,0 +1,114 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block stylesheets %}
+  <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+       
+     <!-- Custom styles for this template-->
+      <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+          <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}">
+{% endblock %}
+{% block body %}
+    <div class="container">
+     {% include "layout/_message_flash.html.twig" %}
+        <div class="row">
+            <div class="col-md-4">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                    {% for image in voiture.images %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index}}" class="{% if loop.index == 1 %} active {% endif %}"></li>
+                        {# <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> #}
+                        
+                        
+                   {% endfor %}
+                        
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for image in voiture.images %}
+                            <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                                <img class="d-block w-100" src="{{asset('uploads/voitures/'~image.nom)}}" alt="First slide">
+                            </div>    
+                        {% endfor %}
+                        
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div> 
+            <div class="col-md-8">
+                
+                <form method="POST">
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <select name="type" class="form-control ">
+                                <option disabled selected>Selection le type d'offre..</option>  
+                                    <option values="vendre">Vendre</option>
+                                    <option values="location">Location</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <input type="number" class="form-control" placeholder="Prix" name="montant">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <input type="number" class="form-control" placeholder="Prix en promotion" name="promotion">
+                         </div>
+                    </div>
+                    <div class="row ">
+                        <div class="form-group col-md-4">
+                            <button type="submit" class="btn btn-primary ml-2">Publier maintenant</button>
+                        </div>
+                     </div>
+                </form>
+            </div>
+        </div>
+       
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                 <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center text-uppercase ">Détaile voiture</h5>
+                <div class="row col-md-12">
+                    <div class="col-md-3">
+                       <b> Marque :</b> {{ voiture.marque }}
+                    </div>
+                     <div class="col-md-3">
+                        <b> Matricule :</b> {{ voiture.matricule }}
+                    </div>
+                    <div class="col-md-3">
+                        <b> Modele :</b> {{ voiture.modele }}
+                    </div>
+                    <div class="col-md-3">
+                        <b> date de creation :</b> {{ voiture.createdAt | date }}
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-3">
+                       <b> Couleur :</b> <button style="background:{{voiture.couleur}}; width:40px; height:40px"></button> 
+                    </div>
+                     <div class="col-md-3">
+                        <b> Description :</b><textarea id="w3review" name="w3review" rows="4" cols="100" readonly>{{ voiture.desciption }}</textarea> 
+                    </div>
+            
+                </div>               
+                  <div class="col-md-4">
+                 <a href="{{path('voiture_admin_update',{id:voiture.id})}}"><button type="submit" class="btn btn-primary text-center " btn-lg btn-block>Modifier la voiture</button></a>
+               </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+{% endblock %}

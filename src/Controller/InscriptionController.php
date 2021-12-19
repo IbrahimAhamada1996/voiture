@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Visiteur;
-use App\Form\VisiteurType;
+use App\Entity\Client;
+use App\Form\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,24 +18,24 @@ class InscriptionController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hash): Response
     {
-        $visiteur = new Visiteur();
+        $client = new Client();
 
-        $form  = $this->createForm(VisiteurType::class,$visiteur);
+        $form  = $this->createForm(ClientType::class,$client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $request->request->get('visiteur')['user'];
+            $data = $request->request->get('client')['user'];
 
-            $passordHash = $hash->hashPassword($visiteur,$data['password']['first']);
-            $visiteur->setNom($data['nom']);
-            $visiteur->setPrenom($data['prenom']);
-            $visiteur->setSex($data['sex']);
-            $visiteur->setEmail($data['email']);
-            $visiteur->setPassword($passordHash);
-            $visiteur->setPhone($data['phone']);
-            $visiteur->setAdresse($data['adresse']);
-            $visiteur->setRoles(['ROLE_VISITEUR']);
-            $manager->persist($visiteur);
+            $passordHash = $hash->hashPassword($client,$data['password']['first']);
+            $client->setNom($data['nom']);
+            $client->setPrenom($data['prenom']);
+            $client->setSex($data['sex']);
+            $client->setEmail($data['email']);
+            $client->setPassword($passordHash);
+            $client->setPhone($data['phone']);
+            $client->setAdresse($data['adresse']);
+            $client->setRoles(['ROLE_CLIENT']);
+            $manager->persist($client);
         
             $manager->flush();
             // Inserer dans la basee de donné
