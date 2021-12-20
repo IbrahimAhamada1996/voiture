@@ -34,7 +34,7 @@ class OffreController extends AbstractController
     {
        $voiture =  $this->manager->getRepository(Voiture::class)->find($id);
         if (!$this->getUser()) {
-           
+            $this->addFlash("danger", "Connectez-Vous avant d'achater ou louer");
             return $this->redirectToRoute('app_login');
         }
         $user = $this->getUser();
@@ -43,16 +43,9 @@ class OffreController extends AbstractController
         
 
         $this->manager->flush();
-        // $data= [];
-        // $session->start();
-        // $session->set('voiture',$id);
-        // $data[]= $session->get('voiture');
-        // dd($data);
-
-        // dump($data);
         
-        return $this->render('offre/show.html.twig', [
-            'voiture' => $this->manager->getRepository(Voiture::class)->find($id),
-        ]);
+        $this->addFlash("success", "Nous avons bien reçu votre démande, Nous vous contacterons");
+        
+       return $this->redirectToRoute('offre_show',['id'=>$id]);
     }
 }

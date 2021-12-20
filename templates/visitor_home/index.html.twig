@@ -5,7 +5,7 @@
 {% block body %}
 
         <!-- Header-->
-        <header class="bg-primary py-5">
+        <header class="bg-primary py-1">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">La plateforme</h1>
@@ -15,6 +15,36 @@
         </header>
         <!-- Section-->
         <section class="py-5">
+            <div class="container px-4 ">
+                <form method="get">
+                    <div class="row">
+                        <div class="form-group col-2">
+                            <select name="type" class="form-control ">
+                                <option disabled selected>select le type offre ...</option>  
+                                    <option value="vendre">En Vendre</option>
+                                    <option value="location">En Location</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <select name="promo" class="form-control ">
+                                <option disabled selected>select promotion?...</option>  
+                                    <option value="en promotion">En promo</option>
+                                    <option value="pas en promotion">pas en promo</option>
+                            </select>
+                        </div>
+                        {# <div class="form-group col-2">
+                            <select name="type" class="form-control ">
+                                <option disabled selected>select..</option>  
+                                    <option values="Clio">Clio</option>
+                                    <option values="MERCEDES-BENZ">MERCEDES-BENZ</option>
+                            </select>
+                        </div> #}
+                        <div class="form-group col-2">
+                            <button type="submit" class="btn btn-primary">Recherche</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% for voiture in voitures %}
@@ -42,10 +72,12 @@
                                     <!-- Product price-->
                                     
                                     {% if voiture.typeOffre.offre.promotion != 0  %}
-                                     <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.promotion  }} FCFA</span>
+                                     <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.montant | number_format(0,',',' ')  }}</span>
+                                    {{ voiture.typeOffre.offre.promotion | number_format(0,',',' ') }} FCFA
+                                     {% else %}
+                                         {{ voiture.typeOffre.offre.montant | number_format(0,',',' ') }} FCFA
                                     {% endif %}
                                     
-                                    {{ voiture.typeOffre.offre.montant  }} FCFA
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -72,7 +104,11 @@
                 {% else %}
                     
                 {% endfor %}
+               
                 </div>
+         <div class="navigation">
+            {{ knp_pagination_render(voitures) }}
+        </div>
             </div>
         </section>
     

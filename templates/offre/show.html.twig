@@ -6,6 +6,7 @@
 {% endblock %}
 {% block body %}
 <div class="container mt-5">
+  {% include "layout/_message_flash.html.twig" %}
     <div class="card mb-3" style="max-width: 100%;">
       <div class="row g-0">
           <div class="col-md-4">
@@ -50,10 +51,11 @@
                     <h5 class="fw-bolder">{{voiture.marque}}</h5>
                     <!-- Product price-->
                     {% if voiture.typeOffre.offre.promotion != 0  %}
-                          <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.promotion  }} FCFA</span>
-                        {% endif %}
-                                    
-                     {{ voiture.typeOffre.offre.montant  }} FCFA
+                          <span class="text-muted text-decoration-line-through">{{ voiture.typeOffre.offre.montant | number_format(2,',',' ')  }} FCFA</span>
+                        {{ voiture.typeOffre.offre.promotion | number_format(2,',',' ') }} FCFA
+                          {% else %}
+                              {{ voiture.typeOffre.offre.montant | number_format(2,',',' ') }} FCFA
+                     {% endif %}
                 </div>
             </div>
              <div class="row">

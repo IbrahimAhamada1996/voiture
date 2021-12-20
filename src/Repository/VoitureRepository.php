@@ -39,7 +39,8 @@ class VoitureRepository extends ServiceEntityRepository
     }
 
     public function findOffrePublie($vendre,$location)
-    {
+    {  
+
         return $this->createQueryBuilder('v')
             ->select('to','v')
             ->join('v.typeOffre','to')
@@ -48,6 +49,74 @@ class VoitureRepository extends ServiceEntityRepository
             ->andWhere('to.isValid = :isValid')
             ->setParameter('vendre', $vendre)
             ->setParameter('location', $location)
+            ->setParameter('isValid', false)
+            ->orderBy('v.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findOffrePublieSearch($type,$promo)
+    {  
+        $query=$this->createQueryBuilder('v')
+            ->select('to','v')
+            ->join('v.typeOffre','to')
+            ->join('to.offre','o')
+            ->where('to.isValid = :isValid')
+            ->setParameter('isValid', false);
+
+        if ($type != null) {
+            $query->andWhere('v.typeVoiture = :vendre')
+                    ->setParameter('vendre', $type)
+                    ;   
+        }
+        if ($promo != null) {
+            if ($promo == "en promotion") {
+                $query->andWhere('o.promotion != :promotion')
+                      ->setParameter('promotion', 0)
+                ;   
+            }elseif ($promo == "pas en promotion") {
+                $query->andWhere('o.promotion = :promotion')
+                ->setParameter('promotion', 0)
+                 ;
+            }
+        }
+
+        return $query
+                ->orderBy('v.id', 'DESC')
+                ->getQuery()
+                ->getResult()     
+            ;
+    }
+
+    public function findAchatsOrLouer($vendre=null,$location=null)
+    {
+        return $this->createQueryBuilder('v')
+            ->select('to','v')
+            ->join('v.typeOffre','to')
+            ->where('v.typeVoiture = :vendre')
+            ->orWhere('v.typeVoiture = :location')
+            ->andWhere('to.ajoutInPanier = :ajoutInPanier')
+            ->setParameter('vendre', $vendre)
+            ->setParameter('location', $location)
+            ->setParameter('ajoutInPanier', true)
+            ->orderBy('v.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAchatsOrLouerAndValid($vendre=null,$location=null)
+    {
+        return $this->createQueryBuilder('v')
+            ->select('to','v')
+            ->join('v.typeOffre','to')
+            ->where('v.typeVoiture = :vendre')
+            ->orWhere('v.typeVoiture = :location')
+            ->andWhere('to.ajoutInPanier = :ajoutInPanier')
+            ->andWhere('to.isValid = :isValid')
+            ->setParameter('vendre', $vendre)
+            ->setParameter('location', $location)
+            ->setParameter('ajoutInPanier', true)
             ->setParameter('isValid', false)
             ->orderBy('v.id', 'DESC')
             ->getQuery()

@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Form\AdminType;
+use App\Repository\AdminRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractController
 {
@@ -54,10 +56,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/list", name="admin_list")
      */
-    public function list(): Response
+    public function list(AdminRepository $adminRepository): Response
     {
         return $this->render('admin/list.html.twig', [
-            'controller_name' => 'AdminController',
+            'admins' => $adminRepository->findAll(),
         ]);
     }
 }

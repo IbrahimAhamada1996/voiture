@@ -27,7 +27,7 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Connexion!</h1>
-
+                                         {% include "layout/_message_flash.html.twig" %}
                                     </div>
                                      {% if error %}
                                         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>

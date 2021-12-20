@@ -24,12 +24,12 @@ class VoitureAdminController extends AbstractController
         $this->manager = $manager;
     }
     /**
+     * 
      * @Route("/admin/voiture/list", name="voiture_admin_list")
      */
     public function list(): Response
     {
-        // dd( $this->manager->getRepository(Voiture::class)->findAll());
-    //    dd($this->getUser());
+    
         return $this->render('voiture_admin/list.html.twig', [
             'voitures' => $this->manager->getRepository(Voiture::class)->findAll(),
         ]);

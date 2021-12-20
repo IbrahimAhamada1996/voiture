@@ -2,26 +2,27 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 {% block stylesheets %}
-  {# <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css"> #}
-    {# <link
+  <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
        
      <!-- Custom styles for this template-->
       <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
-          <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}"> #}
+          <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}">
+           <link href="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 {% endblock %}
 {% block body %}
     <div class="container">
            {% include "layout/_message_flash.html.twig" %}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 
                     <ol class="carousel-indicators">
                     {% for image in voiture.images %}
                         <li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index}}" class="{% if loop.index == 1 %} active {% endif %}"></li>
-                        
+                     
                    {% endfor %}
                         
                     </ol>
@@ -43,25 +44,76 @@
                     </a>
                 </div>
             </div> 
+            <div class="col-md-8">
+          
+           
+                
+              
+                <form method="POST">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>téléphone</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>téléphone</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for user in voiture.users %}                       
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{user.nom}}</td>
+                                    <td>{{user.prenom}}</td>
+                                    <td>{{user.phone}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td><input type="radio" id="html" name="user_id" value="{{user.id}}"  selected="selected"></td>
+                                </tr>
+                            {% else %}
+                                
+                            {% endfor %}
+                            
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row ">
+                        <div class="form-group col-md-4">
+                            <button type="submit" class="btn btn-primary ml-2" {% if voiture.typeOffre.isValid == true %}disabled{% endif %} >Valider la location</button>
+                        </div>
+                     </div>
+                </form>
+        
+                
+            </div>
         </div>
      
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                  <div class="card">
                  <div class="badge bg-primary text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-                 {% if voiture.typeVoiture == 'location' %} En Location
+                
+                    {% if voiture.typeOffre.isValid == true and voiture.typeVoiture == 'louer' %} Loué
                         {% else %}
-                            {% if voiture.typeVoiture == 'vendre' %}En vente
-                                {% else %}
-                                    {% if voiture.typeVoiture == 'achat' %} Vendu 
-                                        {% else %}
-                                            {% if voiture.typeVoiture == 'loue' %} Loué {% endif %}
-                                            
-                                     {% endif %}
-                                    
-                            {% endif %}
-                                
-                 {% endif %}
+                            {% if voiture.typeVoiture == 'louer'  %}En location
+
+                                {% endif %}
+                            
+                    {% endif %}
+                    
                  
   
                  
@@ -102,16 +154,22 @@
                     <div class="col-md-3">
                         <b> date de creation d'offre :</b> {{ voiture.typeOffre.offre.createdAt | date }}
                     </div>
-                    <div class="col-md-3">
-                        <b> typeOffre :</b> {{ voiture.typeVoiture }}
-                    </div>
                 </div>               
                 <div class="col-md-4">
-                 <a href="{{path('voiture_admin_show',{id:voiture.id})}}"><button type="submit" class="btn btn-primary text-center " btn-lg btn-block>Modifier l'offre</button></a>
+                 <a href="{{path('louer_list')}}"><button type="submit" class="btn btn-primary text-center " btn-lg btn-block>Voire les locations</button></a>
                </div>
                 </div> 
             </div>
         </div>
     </div>
+
+       {% block javascripts %}
+     <!-- Page level plugins -->
+    <script src="{{asset('admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{asset('admin/js/demo/datatables-demo.js')}}"></script>
+    {% endblock %}
 {% endblock %}
 

@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Secretaire;
 use App\Form\SecretaireType;
+use App\Repository\SecretaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecretaireController extends AbstractController
 {
@@ -55,10 +57,10 @@ class SecretaireController extends AbstractController
     /**
      * @Route("/admin/secretaire/list", name="secretaire_list")
      */
-    public function list(): Response
+    public function list(SecretaireRepository $secretaireRepository): Response
     {
         return $this->render('secretaire/list.html.twig', [
-            'controller_name' => 'SecretaireController',
+            'secretaires' => $secretaireRepository->findAll(),
         ]);
     }
 }
